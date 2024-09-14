@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Move Effect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="hero">
+        <h1 id="title">Humaiza Naz</h1>
+        <div id="focus"></div>
+    </div>
+</body>
+<script>
+    let focus = document.getElementById("focus");
+    let title = document.getElementById("title");
+    let focusHalfWidth = focus.offsetWidth / 2;
+
+    document.onmousemove = function (e) {
+        focus.style.left = e.pageX - focusHalfWidth + "px";
+        focus.style.top = e.pageY - focusHalfWidth + "px";
+
+        let letters = title.getElementsByTagName('span');
+        for (let i = 0; i < letters.length; i++) {
+            let letter = letters[i];
+            let rect = letter.getBoundingClientRect();
+            let mouseX = e.clientX;
+            let mouseY = e.clientY;
+            let letterX = rect.left + rect.width / 2;
+            let letterY = rect.top + rect.height / 2;
+            let distance = Math.sqrt((mouseX - letterX) ** 2 + (mouseY - letterY) ** 2);
+            let colorIntensity = Math.min(1, distance / 300);
+            letter.style.color = `rgba(0, 0, 0, ${1 - colorIntensity})`; // Black with transition
+        }
+    }
+
+    function wrapLetters() {
+        let text = title.textContent;
+        title.innerHTML = text.split('').map(letter => `<span>${letter}</span>`).join('');
+    }
+
+    wrapLetters();
+</script>
+
+</html>
